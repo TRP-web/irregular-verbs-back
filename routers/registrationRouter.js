@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { OAuth2Client } from "google-auth-library";
-import jwt from "jsonwebtoken";
+import UserPassportModel from "../shems/UserPassport.js";
 
 const regRouter = new Router()
 const clientId = "297750495683-im2hja8uvhhopfjp3rl0g0plkdplvoqf.apps.googleusercontent.com"
@@ -21,10 +21,20 @@ const verifyToken = async (clId, token) => {
 }
 
 regRouter.post("/registration", async (req, res) => {
-    const verifyDecod = await verifyToken(clientId, req.body.token)
     try {
+        const { name, email, picture, sub } = await verifyToken(clientId, req.body.token)
+
+        const UserPassport = new UserPassportModel(
+            { name: name, email: email, picture, sub: sub }
+        )
+
+        await UserPassport.save(err => {
+            if (err) console.log(err)
+        })
+
+        console.log(UserPassport)
         res.status(200).json({
-            ...verifyDecod,
+            ...UserPassport._doc,
             serverMessage: "good reqvest"
         })
     } catch (e) {
