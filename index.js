@@ -2,7 +2,8 @@ import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
 import regRouter from "./routers/registrationRouter.js"
-import { registrationMiddle } from "./middleware/registrationMiddle.js"
+import wordsRouter from "./routers/wordsRouter.js"
+import { tokenTestMiddle } from "./middleware/tokenTestMiddle.js"
 
 const app = express()
 const DB_URL = "mongodb://31.172.75.19:27017/verbs"
@@ -12,7 +13,8 @@ export const clientId = "297750495683-im2hja8uvhhopfjp3rl0g0plkdplvoqf.apps.goog
 
 app.use(express.json())
 app.use(cors())
-app.use("/user", registrationMiddle, regRouter)
+app.use("/user", tokenTestMiddle, regRouter)
+app.use("/words", tokenTestMiddle, wordsRouter)
 
 app.get("/test", (req, res) => {
     res.status(200).json({ fun: "have" })

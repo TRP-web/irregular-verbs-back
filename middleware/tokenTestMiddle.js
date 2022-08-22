@@ -1,11 +1,11 @@
 import { verifyToken } from "../functions/verifyToken.js"
 
-export const registrationMiddle = async (req, res, next) => {
-    if (req.body.token) {
-        const verifyResult = await verifyToken(req.body.token)
+export const tokenTestMiddle = async (req, res, next) => {
+    if (req.header("token")) {
+        const verifyResult = await verifyToken(req.header("token"))
         if (verifyResult !== undefined) {
             req.body.verify = verifyResult
-           next()
+            next()
         } else res.status(400).json({
             serverMessage: "bed token"
         })
