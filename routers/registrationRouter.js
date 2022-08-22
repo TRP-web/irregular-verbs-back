@@ -1,45 +1,48 @@
 import { Router } from "express";
-import { OAuth2Client } from "google-auth-library";
+import { saveModels } from "../functions/saveModels.js";
 import UserPassportModel from "../shems/UserPassport.js";
+import UserWordsModul from "../shems/userWords.js";
 
 const regRouter = new Router()
-const clientId = "297750495683-im2hja8uvhhopfjp3rl0g0plkdplvoqf.apps.googleusercontent.com"
 
-
-const verifyToken = async (clId, token) => {
-    try {
-        const client = new OAuth2Client(clId)
-        const tiket = await client.verifyIdToken({
-            idToken: token,
-            audience: clId
-        })
-        const payload = tiket.getPayload()
-        return payload
-    } catch (e) {
-        console.log(e)
-    }
-}
+// const test = await verifyToken(clientId, "test false token")
+// console.log(test)
 
 regRouter.post("/registration", async (req, res) => {
     try {
-        const { name, email, picture, sub } = await verifyToken(clientId, req.body.token)
+        const reqBody = req.body
+        //has tested decod token
+        const { name, email, picture, sub } = reqBody.verify
+        //testing for repeat
+        const testingForRepeat = await UserPassportModel.findOne({ email: email })
+        if (testingForRepeat === null) {
+            const UserWords = new UserWordsModul()
+            const UserPassport = new UserPassportModel({ name: name, email: email, picture, sub: sub, UserWords: UserWords._id })
 
-        const UserPassport = new UserPassportModel(
-            { name: name, email: email, picture, sub: sub }
-        )
+            //saving user
+            saveModels([UserPassport, UserWords])
 
-        await UserPassport.save(err => {
-            if (err) console.log(err)
-        })
+            await UserPassport.save(err => {
+                if (err) console.log(err, "error")
+            })
+            //response to client
+            res.status(200).json({
+                ...UserPassport._doc,
+                serverMessage: "good reqvest - add in bd"
+            })
+        } else {
+            //response to client
+            res.status(200).json({
+                ...testingForRepeat._doc,
+                severMessage: "good request - login succses"
+            })
+        }
 
-        console.log(UserPassport)
-        res.status(200).json({
-            ...UserPassport._doc,
-            serverMessage: "good reqvest"
-        })
     } catch (e) {
-
+        console.log(e, "error")
     }
+
+
 })
 
 export default regRouter
