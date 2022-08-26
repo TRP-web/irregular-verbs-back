@@ -1,6 +1,6 @@
-export const saveModels = (modelsArray) => {
+export const saveModels = async (modelsArray) => {
     modelsArray.forEach(async (elem, index) => {
-       await elem.save(err => {
+        elem.save(err => {
             if (err) {
                 console.log(err)
             } else console.log(`model number ${index + 1} has saved`)
