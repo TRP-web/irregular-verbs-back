@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import regRouter from "./routers/registrationRouter.js"
 import wordsRouter from "./routers/wordsRouter.js"
 import { tokenTestMiddle } from "./middleware/tokenTestMiddle.js"
+import newWordsRouter from "./routers/newWordsRouter.js"
 
 const app = express()
 const DB_URL = "mongodb://31.172.75.19:27017/verbs"
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use(cors())
 app.use("/user", tokenTestMiddle, regRouter)
 app.use("/words", tokenTestMiddle, wordsRouter)
+app.use("/new-words", tokenTestMiddle, newWordsRouter)
 
 app.get("/test", (req, res) => {
     res.status(200).json({ fun: "have" })
