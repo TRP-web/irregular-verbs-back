@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { saveModels } from "../functions/saveModels.js";
+import NewWordsModule from "../shems/NewWords.js";
 import UserPassportModel from "../shems/UserPassport.js";
 import UserWordsModul from "../shems/userWords.js";
-
+import { wordsRecomended } from '../vars/words.js'
 const regRouter = new Router()
 
 // const test = await verifyToken(clientId, "test false token")
@@ -17,10 +18,14 @@ regRouter.post("/registration", async (req, res) => {
         const testingForRepeat = await UserPassportModel.findOne({ email: email })
         if (testingForRepeat === null) {
             const UserWords = new UserWordsModul()
-            const UserPassport = new UserPassportModel({ name: name, email: email, picture, sub: sub, UserWords: UserWords._id })
+            const NewWords = await NewWordsModule()
+            NewWords.NewWords = wordsRecomended
+            const UserPassport = new UserPassportModel(
+                { name: name, email: email, picture, sub: sub, UserWords: UserWords._id, NewWords: NewWords._id }
+            )
 
             //saving user
-            saveModels([UserPassport, UserWords])
+            saveModels([UserPassport, UserWords, NewWords])
 
             await UserPassport.save(err => {
                 if (err) console.log(err, "error")

@@ -5,7 +5,8 @@ const UserPassport = mongoose.Schema({
     email: { type: String },
     picture: { type: String },
     sub: { type: String },
-    UserWords: {type: mongoose.Schema.Types.ObjectId, ref: "UserWords"}
+    UserWords: { type: mongoose.Schema.Types.ObjectId, ref: "UserWords" },
+    NewWords: { type: mongoose.Schema.Types.ObjectId, ref: "NewWords" }
 })
 
 const UserPassportModel = mongoose.model("UserPassport", UserPassport)
