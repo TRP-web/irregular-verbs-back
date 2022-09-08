@@ -1,20 +1,30 @@
 import { Router } from "express";
-import NewWordsModule from "../shems/NewWords.js";
-import UserPassportModel from "../shems/UserPassport.js";
-import { wordsRecomended } from "../vars/words.js";
+import { findArrayNewWrods, findArrayWords } from "../functions/findFunctions.js";
 
 const newWordsRouter = new Router()
-const findNewWrods = async (type, req) => {
-    if (type === "recommended") {
-        const user = await UserPassportModel.findOne({ email: req.body.verify.email })
-        const result = await NewWordsModule.findById(user.NewWords._id)
-        return result
-    }
-}
-newWordsRouter.get("/recommended", async (req, res) => {
-    const result = await findNewWrods("recommended", req)
 
-    res.status(200).json(result.NewWords)
+newWordsRouter.get("/recommended", async (req, res) => {
+    const newWordsData = await findArrayNewWrods("recommended", req)
+    const wordsData = await findArrayWords(req)
+    const result = newWordsData.NewWords.filter((newWord) => {
+        const find = wordsData.words.find(elem => newWord.word == elem.word)
+        if (find) {
+            return false
+        } else return true
+
+        // wordsData.words.forEach(elem => {
+        //     console.log(newWord.word, elem.word);
+        //     if (respons !== false) {
+        //         if (newWord.word == elem.word) {
+        //             respons = false // remove
+        //         } else {
+        //             respons = true // add
+        //         }
+        //     } else return
+        // }) -- it is bad --
+
+    })
+    res.status(200).json(result)
 })
 
 export default newWordsRouter

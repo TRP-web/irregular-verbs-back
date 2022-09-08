@@ -1,14 +1,11 @@
 import { Router } from "express";
+import { findArrayWords } from "../functions/findFunctions.js";
 import { saveModels } from "../functions/saveModels.js";
 import UserPassportModel from "../shems/UserPassport.js";
 import UserWordsModul from "../shems/userWords.js";
 
 const wordsRouter = new Router()
-const findArrayWords = async (req) => {
-    const user = await UserPassportModel.findOne({ email: req.body.verify.email })
-    const userWord = UserWordsModul.findById(user.UserWords)
-    return userWord
-}
+
 wordsRouter.post("/add", async (req, res) => {
     try {
         // get User Words
