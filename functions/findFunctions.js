@@ -1,6 +1,6 @@
 import NewWordsModule from "../shems/NewWords.js"
 import UserPassportModel from "../shems/UserPassport.js"
-import UserWordsModul from "../shems/userWords.js"
+import UserWordsModul from "../shems/UserWords.js"
 
 
 export const findArrayNewWrods = async (type, req) => {
