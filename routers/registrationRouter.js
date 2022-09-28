@@ -2,7 +2,7 @@ import { Router } from "express";
 import { saveModels } from "../functions/saveModels.js";
 import NewWordsModule from "../shems/NewWords.js";
 import UserPassportModel from "../shems/UserPassport.js";
-import UserWordsModul from "../shems/userWords.js";
+import UserWordsModul from "../shems/UserWords.js";
 import { wordsRecomended } from '../vars/words.js'
 const regRouter = new Router()
 
