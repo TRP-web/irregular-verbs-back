@@ -2,7 +2,7 @@ import { Router } from "express";
 import { findArrayWords } from "../functions/findFunctions.js";
 import { saveModels } from "../functions/saveModels.js";
 import UserPassportModel from "../shems/UserPassport.js";
-import UserWordsModul from "../shems/userWords.js";
+import UserWordsModul from "../shems/UserWords.js";
 
 const wordsRouter = new Router()
 
