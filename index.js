@@ -13,7 +13,7 @@ const certificate = fs.readFileSync("./ssl/trp-web.crt")
 console.log(privateKey)
 const app = express()
 
-const httpsServer = https.createServer({key: privateKey, cert: certificate}, express)
+const httpsServer = https.createServer({ key: privateKey, cert: certificate }, express)
 
 const DB_URL = "mongodb://31.172.75.19:27017/verbs"
 const PORT = 22008
@@ -26,8 +26,8 @@ app.use("/user", tokenTestMiddle, regRouter)
 app.use("/words", tokenTestMiddle, wordsRouter)
 app.use("/new-words", tokenTestMiddle, newWordsRouter)
 
-app.get("/test", (req, res) => {
-    res.status(200).json({ fun: "have" })
+app.get("/", (req, res) => {
+    res.send("https thare working")
 })
 
 const serverStart = async () => {
