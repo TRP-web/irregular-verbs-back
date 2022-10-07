@@ -1,12 +1,20 @@
 import express from "express"
+import fs from "fs"
+import https from "https"
 import cors from "cors"
 import mongoose from "mongoose"
 import regRouter from "./routers/registrationRouter.js"
 import wordsRouter from "./routers/wordsRouter.js"
 import { tokenTestMiddle } from "./middleware/tokenTestMiddle.js"
 import newWordsRouter from "./routers/newWordsRouter.js"
+const privateKey = fs.readFileSync("./ssl/trp-web.key")
+const certificate = fs.readFileSync("./ssl/trp-web.crt")
 
+console.log(privateKey)
 const app = express()
+
+const httpsServer = https.createServer({key: privateKey, cert: certificate}, express)
+
 const DB_URL = "mongodb://31.172.75.19:27017/verbs"
 const PORT = 22008
 export const secret = "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"
@@ -28,7 +36,7 @@ const serverStart = async () => {
             useUnifiedTopology: true,
             useNewUrlParser: true
         }).then(() => console.log("db had connected"))
-        app.listen(PORT, () => console.log(`sever: ${PORT}`))
+        httpsServer.listen(PORT, () => console.log(`sever: ${PORT}`))
     } catch (e) {
         console.log(e, "error")
     }
