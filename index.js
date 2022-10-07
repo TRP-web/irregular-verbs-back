@@ -13,7 +13,7 @@ const certificate = fs.readFileSync("./ssl/trp-web.crt")
 console.log(privateKey)
 const app = express()
 
-const httpsServer = https.createServer({ key: privateKey, cert: certificate }, express)
+const httpsServer = https.createServer({ key: privateKey, cert: certificate }, app)
 
 const DB_URL = "mongodb://31.172.75.19:27017/verbs"
 const PORT = 22008
