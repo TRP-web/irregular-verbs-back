@@ -27,6 +27,7 @@ app.use("/words", tokenTestMiddle, wordsRouter)
 app.use("/new-words", tokenTestMiddle, newWordsRouter)
 
 app.get("/", (req, res) => {
+    console.log("send")
     res.send("https thare working")
 })
 
