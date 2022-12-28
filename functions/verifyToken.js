@@ -1,15 +1,13 @@
 import { OAuth2Client } from "google-auth-library"
-import { clientId } from "../index.js"
 
 export const verifyToken = async (token) => {
     try {
-        const client = new OAuth2Client(clientId)
+        const client = new OAuth2Client(process.env.CLIENT_ID)
         const tiket = await client.verifyIdToken({
             idToken: token,
-            audience: clientId
+            audience: process.env.CLIENT_ID
         })
         const payload = tiket.getPayload()
-
         return payload
     } catch (e) {
         console.log(e)

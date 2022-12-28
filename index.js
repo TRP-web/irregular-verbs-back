@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config()
+
 import express from "express"
 import fs from "fs"
 import https from "https"
@@ -7,18 +10,9 @@ import regRouter from "./routers/registrationRouter.js"
 import wordsRouter from "./routers/wordsRouter.js"
 import { tokenTestMiddle } from "./middleware/tokenTestMiddle.js"
 import newWordsRouter from "./routers/newWordsRouter.js"
-const privateKey = fs.readFileSync("./ssl/trp-web.key")
-const certificate = fs.readFileSync("./ssl/trp-web.crt")
 
-console.log(privateKey)
 const app = express()
 
-const httpsServer = https.createServer({ key: privateKey, cert: certificate }, app)
-
-const DB_URL = "mongodb://31.172.75.19:27017/verbs"
-const PORT = 22008
-export const secret = "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"
-export const clientId = "297750495683-im2hja8uvhhopfjp3rl0g0plkdplvoqf.apps.googleusercontent.com"
 
 app.use(express.json())
 app.use(cors())
@@ -27,19 +21,28 @@ app.use("/words", tokenTestMiddle, wordsRouter)
 app.use("/new-words", tokenTestMiddle, newWordsRouter)
 
 app.get("/test", (req, res) => {
-    res.status(200).json({have: "fan"})
+    res.status(200).json({ have: "fan" })
 })
 
 const serverStart = async () => {
     try {
-        await mongoose.connect(DB_URL, {
+        await mongoose.connect(process.env.DB_URL, {
             useUnifiedTopology: true,
             useNewUrlParser: true
         }).then(() => console.log("db had connected"))
-        httpsServer.listen(PORT, () => console.log(`sever: ${PORT}`))
+        if (process.env.PROJECT_STATUS === "developing") {
+            app.listen(22008, () => console.log(`sever: ${process.env.PORT}`))
+        } else if (process.env.PROJECT_STATUS === "working") {
+            const privateKey = fs.readFileSync("./ssl/trp-web.key")
+            const certificate = fs.readFileSync("./ssl/trp-web.crt")
+            const httpsServer = https.createServer({ key: privateKey, cert: certificate }, app)
+            httpsServer.listen(process.env.PORT, () => console.log(`sever: ${process.env.PORT}`))
+        }
+
     } catch (e) {
         console.log(e, "error")
     }
 }
 
 serverStart()
+console.log(process.env.DB_URL)

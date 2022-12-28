@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { findArrayNewWrods, findArrayWords } from "../functions/findFunctions.js";
+import Find from "../functions/Find.js";
+
 
 const newWordsRouter = new Router()
 
 newWordsRouter.get("/recommended", async (req, res) => {
-    const newWordsData = await findArrayNewWrods("recommended", req)
-    const wordsData = await findArrayWords(req)
+    const newWordsData = await Find.arrayNewWrods("recommended", req)
+    const wordsData = await Find.arrayWords(req)
     const result = newWordsData.NewWords.filter((newWord) => {
         const find = wordsData.words.find(elem => newWord.word == elem.word)
         if (find) {
