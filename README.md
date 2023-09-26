@@ -9,8 +9,6 @@
 - jwt
 
 
-
-This site was built using [GitHub Pages](https://pages.github.com/).
 [Check the app](https://pages.github.com/](https://irregular-verbs-front-trp-web.vercel.app/))
 
 ### About application 
