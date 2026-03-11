@@ -1,22 +1,72 @@
-# back-end of application that can help you to learn irregular verbs
 
+## README для `irregular-verbs-back`
 
-## This project use
-- TypeScript
-- express
-- mongoose
-- mongoDB
-- jwt
+```md
+# Irregular Verbs Backend
 
+Backend API for the Irregular Verbs learning application.
 
-[Check the app](https://pages.github.com/](https://irregular-verbs-front-trp-web.vercel.app/))
+This server handles user registration, word management, recommended verbs, and statistics updates for each user.
 
-### About application 
-This applocation realy helped me when i was beginer in eanglish.
-registration is easy, just use your gmail account. 
+## Related Frontend
 
+- Frontend repository: https://github.com/TRP-web/irregular-verbs-front
+- Live app: https://prontodev.dev/portfolio/irr-verbs
 
-At the page "[Learn new](https://pages.github.com/](https://irregular-verbs-front-trp-web.vercel.app/learn-new))" you may find new words for your word list. 
-Then you can test your self at the page "[Tests](https://pages.github.com/](https://irregular-verbs-front-trp-web.vercel.app/tests))".
-Audio of words is avalible!
+## Features
 
+- User registration / login flow
+- MongoDB database integration
+- JWT/token-based protected routes
+- Personal words list management
+- Recommended verbs endpoint
+- Word statistics updates
+- CORS-enabled API
+
+## Tech Stack
+
+- Node.js
+- Express
+- MongoDB
+- Mongoose
+- JSON Web Token
+- Google Auth Library
+- Dotenv
+- CORS
+
+## API Routes
+
+### User
+
+- `POST /user/registration`
+
+Registers a new user or logs in an existing one.
+
+### Words
+
+- `POST /words/add` — add a new word
+- `GET /words/receive` — get saved user words
+- `DELETE /words/delete` — remove a word
+- `PUT /words/update-statistics` — update word statistics
+
+### New Words
+
+- `GET /new-words/recommended` — returns recommended verbs that are not yet in the user’s saved list
+
+### Test
+
+- `GET /test` — simple test route
+
+## Project Structure
+
+```bash
+irregular-verbs-back/
+│
+├── functions/
+├── middleware/
+├── routers/
+├── shems/
+├── vars/
+├── index.js
+├── package.json
+└── README.md
