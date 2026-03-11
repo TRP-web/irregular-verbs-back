@@ -1,7 +1,6 @@
 
 ## README для `irregular-verbs-back`
 
-```md
 # Irregular Verbs Backend
 
 Backend API for the Irregular Verbs learning application.
